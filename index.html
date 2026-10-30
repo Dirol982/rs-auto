@@ -1,0 +1,579 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>RS-Auto — концепт</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tektur:wght@500;700;800;900&family=Onest:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&family=Unbounded:wght@500;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kp.css">
+<style>
+/* Концепт RS-Auto: «пит-стоп» — тёмный графит, гоночный красный, цена на виду.
+   Главный герой страницы — калькулятор ремонта по реальному прайсу. */
+:root{
+  --ink:#0C0D0F;
+  --ink-2:#15171A;
+  --ink-3:#1E2125;
+  --line:rgba(255,255,255,.09);
+  --paper:#F2F0EC;
+  --text:#F4F4F2;
+  --muted:#9BA1A9;
+  --red:#E3120B;
+  --red-2:#FF3B30;
+  --ok:#2BD576;
+  --font-d:"Tektur","Arial Narrow",system-ui,sans-serif;
+  --font:"Onest",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--ink);color:var(--text);-webkit-font-smoothing:antialiased;line-height:1.5;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+button,input,select{font:inherit;color:inherit}
+.wrap{max-width:1280px;margin:0 auto;padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:max(24px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--font-d);font-weight:800;letter-spacing:-.01em;line-height:.98;text-transform:uppercase;text-wrap:balance}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--red-2)}
+.btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:10px;height:56px;padding:0 28px;border:0;cursor:pointer;font-family:var(--font-d);font-weight:700;font-size:15px;letter-spacing:.06em;text-transform:uppercase;clip-path:polygon(12px 0,100% 0,calc(100% - 12px) 100%,0 100%);transition:background .2s,transform .2s}
+.btn-red{background:var(--red);color:#fff}
+.btn-red:hover{background:var(--red-2)}
+.btn-ghost{background:rgba(255,255,255,.08);color:#fff}
+.btn-ghost:hover{background:rgba(255,255,255,.16)}
+.btn:focus-visible,.chip:focus-visible,.item:focus-visible,.seg button:focus-visible{outline:2px solid var(--red-2);outline-offset:3px}
+.reveal{transition:transform .9s cubic-bezier(.2,.7,.2,1),opacity .9s}
+.reveal.pre{transform:translateY(28px);opacity:.001}
+@media (prefers-reduced-motion:reduce){.reveal,.reveal.pre{transform:none;opacity:1;transition:none}html{scroll-behavior:auto}.marquee-track{animation:none!important}}
+
+/* прогресс прокрутки */
+.progress{position:fixed;left:0;top:0;height:3px;width:100%;transform-origin:0 50%;transform:scaleX(0);background:var(--red);z-index:90}
+
+/* header */
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--ink)}
+.hdr{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:rgba(12,13,15,.78);backdrop-filter:blur(16px) saturate(1.3);-webkit-backdrop-filter:blur(16px) saturate(1.3);border-bottom:1px solid var(--line)}
+.hdr .wrap{display:flex;align-items:center;gap:32px;height:74px}
+.logo img{height:40px;width:auto}
+.nav{display:flex;gap:26px;font-weight:600;font-size:15px;color:#C9CDD3}
+.nav a:hover{color:#fff}
+.hdr-r{margin-left:auto;display:flex;align-items:center;gap:16px}
+.open{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:#C9CDD3;white-space:nowrap}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 0 rgba(43,213,118,.6);animation:pulse 2s infinite}
+.dot.off{background:#F5A524;animation:none}
+@keyframes pulse{70%{box-shadow:0 0 0 9px rgba(43,213,118,0)}100%{box-shadow:0 0 0 0 rgba(43,213,118,0)}}
+.hdr .btn{height:44px;padding:0 20px;font-size:13px}
+
+/* hero */
+.hero{position:relative;overflow:hidden;min-height:min(820px,100svh);display:flex;align-items:center;isolation:isolate}
+.hero .wrap{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center;width:100%;padding-top:56px;padding-bottom:80px}
+.hero-txt{position:relative;z-index:3}
+.hero h1{font-size:clamp(46px,6.4vw,96px);margin:22px 0 24px}
+.hero h1 em{font-style:normal;color:var(--red);display:block}
+.hero .lead{font-size:19px;color:#C9CDD3;max-width:520px}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap;margin-top:34px}
+.stats{display:flex;gap:36px;margin-top:44px;flex-wrap:wrap}
+.stats b{display:block;font-family:var(--font-d);font-size:34px;font-weight:800}
+.stats span{font-size:13px;color:var(--muted)}
+.bigtype{position:absolute;right:-4vw;top:50%;transform:translateY(-50%);font-family:var(--font-d);font-weight:900;font-size:clamp(220px,34vw,520px);line-height:.8;color:transparent;-webkit-text-stroke:1.5px rgba(255,255,255,.07);z-index:-1;user-select:none;white-space:nowrap}
+.glow{position:absolute;right:8%;top:20%;width:720px;height:720px;max-width:90vw;border-radius:50%;background:radial-gradient(circle,rgba(227,18,11,.32),transparent 62%);filter:blur(10px);z-index:-1}
+.lines{position:absolute;inset:0;z-index:-1;background:repeating-linear-gradient(100deg,transparent 0 120px,rgba(255,255,255,.025) 120px 121px);mask-image:linear-gradient(90deg,transparent,#000 40%,#000 80%,transparent)}
+.car-wrap{position:relative;z-index:2;height:520px}
+.car{position:absolute;left:50%;top:50%;width:min(720px,118%);max-width:none;transform:translate(-50%,-50%);filter:drop-shadow(0 40px 60px rgba(0,0,0,.6)) drop-shadow(0 0 40px rgba(227,18,11,.15))}
+.tag{position:absolute;z-index:3;display:flex;align-items:center;gap:10px;background:rgba(21,23,26,.82);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--line);padding:10px 14px;font-size:13px;color:#C9CDD3;white-space:nowrap}
+.tag b{font-family:var(--mono);color:#fff;font-size:14px}
+.tag::before{content:"";width:8px;height:8px;background:var(--red);transform:rotate(45deg)}
+.t1{left:2%;top:18%}.t2{right:0;top:30%}.t3{left:10%;bottom:16%}.t4{right:6%;bottom:8%}
+.scroll-hint{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:8px}
+.scroll-hint i{width:1px;height:34px;background:linear-gradient(var(--red),transparent);animation:drip 1.8s infinite}
+@keyframes drip{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* бегущая строка цен */
+.marquee{border-block:1px solid var(--line);background:var(--ink-2);overflow:hidden;position:relative}
+.marquee-track{display:flex;gap:48px;width:max-content;padding:18px 0;animation:run 42s linear infinite}
+.marquee:hover .marquee-track{animation-play-state:paused}
+.marquee span{font-family:var(--font-d);font-weight:700;font-size:20px;text-transform:uppercase;white-space:nowrap;display:flex;align-items:center;gap:14px}
+.marquee span b{font-family:var(--mono);color:var(--red-2);font-size:17px}
+.marquee span::after{content:"";width:8px;height:8px;background:var(--red);transform:rotate(45deg);margin-left:34px}
+@keyframes run{to{transform:translateX(-50%)}}
+
+/* секции */
+section.s{padding:120px 0;position:relative}
+.s-head{display:flex;justify-content:space-between;align-items:end;gap:32px;flex-wrap:wrap;margin-bottom:48px}
+.s-head h2{font-size:clamp(36px,4.6vw,66px);margin-top:14px;max-width:820px}
+.s-head h2 em{font-style:normal;color:var(--red)}
+.s-head p{color:var(--muted);max-width:400px;font-size:17px}
+
+/* калькулятор */
+.calc{display:grid;grid-template-columns:1fr 400px;gap:24px;align-items:start}
+.panel{background:var(--ink-2);border:1px solid var(--line);padding:28px;min-width:0}
+.calc-top{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+.seg{display:inline-flex;background:var(--ink);border:1px solid var(--line);padding:4px}
+.seg button{border:0;background:transparent;padding:10px 16px;font-weight:700;font-size:14px;color:var(--muted);cursor:pointer;transition:.2s}
+.seg button.on{background:#fff;color:var(--ink)}
+.calc-top small{color:var(--muted);font-size:13px}
+.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:18px;scrollbar-width:thin}
+.chip{flex:none;border:1px solid var(--line);background:transparent;padding:10px 14px;font-size:14px;font-weight:600;color:#C9CDD3;cursor:pointer;transition:.2s;white-space:nowrap}
+.chip:hover{border-color:rgba(255,255,255,.3)}
+.chip.on{background:var(--red);border-color:var(--red);color:#fff}
+.chip i{font-style:normal;font-family:var(--mono);font-size:11px;opacity:.7;margin-left:6px}
+.items{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.item{display:flex;align-items:center;gap:14px;padding:14px 16px;background:var(--ink);border:1px solid var(--line);cursor:pointer;text-align:left;transition:border-color .2s,background .2s,transform .15s;min-width:0}
+.item:hover{border-color:rgba(255,255,255,.25)}
+.item:active{transform:scale(.99)}
+.item .box{width:22px;height:22px;flex:none;border:1.5px solid rgba(255,255,255,.35);display:grid;place-items:center;transition:.2s}
+.item .box::after{content:"";width:10px;height:5px;border:2px solid #fff;border-top:0;border-right:0;transform:rotate(-45deg) translate(1px,-1px) scale(0);transition:transform .2s}
+.item.on{border-color:var(--red);background:rgba(227,18,11,.08)}
+.item.on .box{background:var(--red);border-color:var(--red)}
+.item.on .box::after{transform:rotate(-45deg) translate(1px,-1px) scale(1)}
+.item .nm{flex:1;font-size:15px;font-weight:500;line-height:1.3;min-width:0}
+.item .pr{font-family:var(--mono);font-size:14px;color:#fff;white-space:nowrap}
+.item .pr small{color:var(--muted);font-size:11px;margin-right:3px}
+.receipt{position:sticky;top:100px;background:var(--paper);color:var(--ink);padding:28px 26px 24px;clip-path:polygon(0 0,100% 0,100% calc(100% - 10px),95% 100%,90% calc(100% - 10px),85% 100%,80% calc(100% - 10px),75% 100%,70% calc(100% - 10px),65% 100%,60% calc(100% - 10px),55% 100%,50% calc(100% - 10px),45% 100%,40% calc(100% - 10px),35% 100%,30% calc(100% - 10px),25% 100%,20% calc(100% - 10px),15% 100%,10% calc(100% - 10px),5% 100%,0 calc(100% - 10px))}
+.receipt h3{font-size:22px}
+.receipt .meta{font-family:var(--mono);font-size:11px;color:#6B6F75;margin:6px 0 16px;text-transform:uppercase;letter-spacing:.06em}
+.lines-r{list-style:none;border-top:1.5px dashed #BDB8AF;border-bottom:1.5px dashed #BDB8AF;padding:12px 0;min-height:120px;max-height:260px;overflow:auto}
+.lines-r li{display:flex;justify-content:space-between;gap:12px;font-size:14px;padding:5px 0;animation:pop .3s ease}
+.lines-r li span:last-child{font-family:var(--mono);white-space:nowrap}
+.lines-r .empty{color:#8A8E94;font-size:14px;display:block;padding:24px 0;text-align:center}
+@keyframes pop{from{opacity:0;transform:translateX(-8px)}}
+.total{display:flex;justify-content:space-between;align-items:baseline;margin:16px 0 4px}
+.total span{font-weight:700}
+.total b{font-family:var(--font-d);font-size:44px;font-weight:900;letter-spacing:-.02em}
+.total b small{font-size:16px;font-weight:700;margin-right:6px}
+.note{font-size:12px;color:#6B6F75;line-height:1.45}
+.receipt select,.receipt input{width:100%;height:50px;border:1.5px solid #CFCAC1;background:#fff;padding:0 14px;font-size:15px;margin-top:10px;outline:none;color:var(--ink);border-radius:0;appearance:none}
+.receipt select{background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%230C0D0F' stroke-width='2.5'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 14px center}
+.receipt select:focus,.receipt input:focus{border-color:var(--red)}
+.receipt .btn{width:100%;margin-top:14px}
+
+/* услуги */
+.bento{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:260px;gap:12px}
+.card{position:relative;overflow:hidden;background:var(--ink-3);display:flex;flex-direction:column;justify-content:flex-end;padding:22px;isolation:isolate;min-width:0}
+.card img{position:absolute;left:0;top:-15%;width:100%;height:130%;object-fit:cover;z-index:-2;transition:transform .8s cubic-bezier(.2,.7,.2,1),filter .6s;filter:grayscale(.85) contrast(1.05) brightness(.7)}
+.card::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(0deg,rgba(12,13,15,.95),rgba(12,13,15,.15) 60%)}
+.card:hover img{filter:grayscale(0) brightness(.8);transform:scale(1.06)}
+.card h3{font-size:22px}
+.card .from{font-family:var(--mono);font-size:14px;color:#fff;margin-top:8px;display:flex;justify-content:space-between;align-items:center}
+.card .from b{color:var(--red-2)}
+.card .arr{width:38px;height:38px;display:grid;place-items:center;background:var(--red);transform:translateX(10px);opacity:0;transition:.3s}
+.card:hover .arr{transform:none;opacity:1}
+.card.w2{grid-column:span 2}
+.card.h2{grid-row:span 2}
+.card.h2 h3{font-size:clamp(28px,3vw,40px)}
+
+/* станции */
+.stations{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.st{background:var(--ink-2);border:1px solid var(--line);display:flex;flex-direction:column;transition:transform .35s,border-color .3s;min-width:0}
+.st:hover{transform:translateY(-6px);border-color:rgba(227,18,11,.6)}
+.st .ph{position:relative;aspect-ratio:16/10;overflow:hidden;max-width:100%}
+.st .ph img{width:100%;height:100%;object-fit:cover;transition:transform .8s}
+.st:hover .ph img{transform:scale(1.05)}
+.st .live{position:absolute;left:14px;top:14px;display:flex;align-items:center;gap:8px;background:rgba(12,13,15,.85);padding:7px 11px;font-size:12px;font-weight:700}
+.st .bd{padding:22px;display:flex;flex-direction:column;gap:12px;flex:1}
+.st h3{font-size:24px}
+.st .hrs{font-family:var(--mono);font-size:13px;color:var(--muted)}
+.st ul{list-style:none;display:flex;flex-wrap:wrap;gap:6px}
+.st li{font-size:12px;font-weight:600;padding:5px 9px;border:1px solid var(--line);color:#C9CDD3}
+.st .tels{font-family:var(--mono);font-size:14px;line-height:1.8;margin-top:auto}
+.st .tels a:hover{color:var(--red-2)}
+.st .acts{display:flex;gap:8px}
+.st .acts .btn{height:46px;font-size:12px;padding:0 16px;flex:1}
+
+/* почему мы */
+.why{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line)}
+.why div{padding:34px 26px 10px 0;border-right:1px solid var(--line);margin-right:26px}
+.why div:last-child{border-right:0;margin-right:0}
+.why b{font-family:var(--font-d);font-size:clamp(44px,5vw,72px);font-weight:900;line-height:1;color:#fff}
+.why b em{font-style:normal;color:var(--red)}
+.why h3{font-family:var(--font);text-transform:none;font-size:18px;font-weight:700;letter-spacing:0;margin:18px 0 8px;line-height:1.3}
+.why p{color:var(--muted);font-size:15px}
+
+/* отзывы */
+.reviews{overflow:hidden;mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.rev-track{display:flex;gap:16px;width:max-content;animation:run 60s linear infinite}
+.reviews:hover .rev-track{animation-play-state:paused}
+.rev{width:380px;background:var(--ink-2);border:1px solid var(--line);padding:26px;flex:none}
+.rev .stars{font-family:var(--mono);color:var(--red-2);letter-spacing:.1em;font-size:11px;text-transform:uppercase}
+.rev p{margin:12px 0 18px;font-size:16px;color:#DADDE1}
+.rev b{font-size:14px}
+
+/* призыв */
+.cta{position:relative;overflow:hidden;background:var(--red);color:#fff;padding:80px 0}
+.cta .wrap{display:flex;justify-content:space-between;align-items:center;gap:32px;flex-wrap:wrap}
+.cta h2{font-size:clamp(36px,5vw,72px);max-width:760px}
+.cta .btn-ink{background:var(--ink);color:#fff}
+.cta .btn-ink:hover{background:#000}
+.cta::before{content:"RS";position:absolute;right:-2vw;bottom:-14vw;font-family:var(--font-d);font-weight:900;font-size:40vw;line-height:1;color:rgba(0,0,0,.12)}
+
+.ftr{padding:56px 0 48px;color:var(--muted);font-size:14px;border-top:1px solid var(--line)}
+.ftr .wrap{display:flex;justify-content:space-between;gap:32px;flex-wrap:wrap;align-items:flex-start}
+.ftr img{height:36px;width:auto;margin-bottom:12px}
+.ftr nav{display:flex;gap:22px;flex-wrap:wrap}
+.ftr a:hover{color:#fff}
+
+/* мобильная панель расчёта */
+.mbar{display:none}
+.toast{visibility:hidden;position:fixed;left:50%;bottom:28px;transform:translate(-50%,160%);background:#fff;color:var(--ink);padding:16px 22px;font-size:14px;font-weight:600;z-index:100;transition:transform .45s cubic-bezier(.2,.8,.2,1);max-width:calc(100% - 32px)}
+.toast.show{visibility:visible;transform:translate(-50%,0)}
+
+/* блок КП в фирменном красном */
+.kp{--accent:#E3120B;--accent-2:#B80E08}
+.kp .will-card::after{background:radial-gradient(circle,rgba(227,18,11,.35),transparent 70%)}
+.kp .btn{clip-path:none;font-family:var(--font);text-transform:none;letter-spacing:0;box-shadow:0 10px 30px -10px rgba(227,18,11,.6)}
+.kp .col-lbl.will{background:#FDE7E6;color:#B80E08}
+
+@media (max-width:1080px){
+  .nav,.open{display:none}
+  .hero .wrap{grid-template-columns:1fr}
+  .car-wrap{height:380px}
+  .calc{grid-template-columns:1fr}
+  .receipt{position:relative;top:0}
+  .bento{grid-template-columns:repeat(2,1fr)}
+  .stations{grid-template-columns:1fr 1fr}
+  .why{grid-template-columns:1fr 1fr}
+  .why div:nth-child(2){border-right:0;margin-right:0}
+}
+@media (max-width:720px){
+  .wrap{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+  .hdr .wrap{height:64px;gap:12px}
+  .logo img{height:32px}
+  .hdr .btn{display:none}
+  .hero{min-height:0}
+  .hero .wrap{padding-top:36px;padding-bottom:56px}
+  .hero .lead{font-size:17px}
+  .stats{gap:24px}
+  .stats b{font-size:26px}
+  .car-wrap{height:260px}
+  .tag{font-size:11px;padding:7px 10px}
+  .tag b{font-size:12px}
+  .t1{left:0;top:4%}.t2{right:0;top:auto;bottom:4%}.t3,.t4{display:none}
+  .scroll-hint{display:none}
+  section.s{padding:72px 0}
+  .s-head{margin-bottom:28px}
+  .panel{padding:16px}
+  .items{grid-template-columns:1fr}
+  .bento{grid-template-columns:1fr;grid-auto-rows:200px}
+  .card.w2,.card.h2{grid-column:auto;grid-row:auto}
+  .stations{grid-template-columns:1fr}
+  .why{grid-template-columns:1fr}
+  .why div{border-right:0;margin-right:0;border-bottom:1px solid var(--line);padding:24px 0}
+  .rev{width:300px}
+  .ftr{padding-bottom:110px}
+  .mbar{display:flex;align-items:center;gap:12px;position:fixed;left:0;right:0;bottom:0;z-index:60;padding:10px max(14px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(14px,env(safe-area-inset-left,0px));background:rgba(12,13,15,.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line)}
+  .mbar .sum{flex:1;line-height:1.2}
+  .mbar .sum small{display:block;font-size:11px;color:var(--muted)}
+  .mbar .sum b{font-family:var(--font-d);font-size:22px}
+  .mbar .btn{height:48px;font-size:13px;padding:0 18px}
+  .mbar a.call{width:48px;height:48px;display:grid;place-items:center;background:rgba(255,255,255,.08)}
+  .mbar a.call svg{width:20px;height:20px;fill:#fff}
+}
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+
+<header class="hdr">
+  <div class="wrap">
+    <a href="#" class="logo"><img src="assets/logo-light.png" alt="RS-Auto"></a>
+    <nav class="nav"><a href="#calc">Калькулятор</a><a href="#services">Услуги</a><a href="#stations">3 СТО</a><a href="#reviews">Отзывы</a></nav>
+    <div class="hdr-r">
+      <span class="open"><span class="dot" id="hdrDot"></span><span id="hdrOpen">Открыто</span></span>
+      <a class="btn btn-red" href="#calc">Рассчитать ремонт</a>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="lines" data-speed="0.15"></div>
+  <div class="glow" data-speed="0.25"></div>
+  <div class="bigtype" data-speed="0.35" aria-hidden="true">RS</div>
+  <div class="wrap">
+    <div class="hero-txt">
+      <div class="eyebrow">СТО в Минске · 3 станции · без выходных</div>
+      <h1>Узнайте цену ремонта <em>до приезда</em></h1>
+      <p class="lead">37 работ с ценами — от замены масла до ремонта рулевой рейки. Отметьте, что нужно, и запишитесь на ближайшую из трёх СТО.</p>
+      <div class="hero-btns">
+        <a class="btn btn-red" href="#calc">Посчитать ремонт →</a>
+        <a class="btn btn-ghost" href="#stations">Выбрать СТО</a>
+      </div>
+      <div class="stats">
+        <div><b>3</b><span>СТО в Минске</span></div>
+        <div><b>7/7</b><span>без выходных</span></div>
+        <div><b>от 20 BYN</b><span>диагностика подвески</span></div>
+      </div>
+    </div>
+    <div class="car-wrap" id="carWrap">
+      <img class="car" src="assets/car-xray.webp" alt="Автомобиль в разрезе" data-mouse="18">
+      <div class="tag t1" data-mouse="34">Развал-схождение <b>от 30</b></div>
+      <div class="tag t2" data-mouse="-28">Замена масла <b>от 30</b></div>
+      <div class="tag t3" data-mouse="24">Диагностика <b>от 30</b></div>
+      <div class="tag t4" data-mouse="-20">Шиномонтаж <b>от 55</b></div>
+    </div>
+  </div>
+  <div class="scroll-hint">SCROLL<i></i></div>
+</section>
+
+<div class="marquee" aria-label="Цены на популярные работы">
+  <div class="marquee-track" id="marquee"></div>
+</div>
+
+<section class="s" id="calc">
+  <div class="wrap">
+    <div class="s-head reveal">
+      <div><div class="eyebrow">Калькулятор ремонта</div><h2>Отметьте работы — <em>цена считается сразу</em></h2></div>
+      <p>Цены из прайса RS-Auto. Точную стоимость мастер-приёмщик согласует с вами после осмотра — до начала работ.</p>
+    </div>
+    <div class="calc reveal">
+      <div class="panel">
+        <div class="calc-top">
+          <div class="seg" role="group" aria-label="Тип автомобиля">
+            <button type="button" class="on" data-car="car">Легковой</button>
+            <button type="button" data-car="suv">Джип / микроавтобус</button>
+          </div>
+          <small id="carNote">Цена развал-схождения зависит от типа авто</small>
+        </div>
+        <div class="chips" id="cats" role="tablist"></div>
+        <div class="items" id="items"></div>
+      </div>
+      <form class="receipt" id="receipt" onsubmit="return book(event)">
+        <h3>Предварительный расчёт</h3>
+        <div class="meta" id="rmeta">RS-Auto · Минск</div>
+        <ul class="lines-r" id="lines"><li class="empty">Отметьте работы слева</li></ul>
+        <div class="total"><span>Итого</span><b><small>от</small><span id="sum">0</span> BYN</b></div>
+        <p class="note">Ориентировочная стоимость работ без запчастей. Точная цена — после осмотра, согласуем до начала ремонта.</p>
+        <label for="st" class="note" style="display:block;margin-top:14px;font-weight:700;color:#0C0D0F">Где удобнее</label>
+        <select id="st">
+          <option>СТО на ул. Янки Мавра, 41</option>
+          <option>СТО на ул. Пономаренко, 75А</option>
+          <option>СТО на ул. Уборевича, 85</option>
+        </select>
+        <input id="tel" type="tel" placeholder="+375 (__) ___-__-__" aria-label="Телефон">
+        <button class="btn btn-red" type="submit">Записаться с этим расчётом</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section class="s" id="services" style="padding-top:0">
+  <div class="wrap">
+    <div class="s-head reveal">
+      <div><div class="eyebrow">Услуги</div><h2>Всё для машины — <em>в одном месте</em></h2></div>
+      <p>Компьютерная диагностика, балансировочные стенды и спецоборудование на всех СТО.</p>
+    </div>
+    <div class="bento reveal">
+      <a class="card w2 h2" href="#calc" data-cat="podveska"><img src="assets/s-podveska.jpg" alt="" data-par="0.12"><div class="eyebrow">Самое частое</div><h3>Ремонт подвески и рулевого</h3><div class="from">сайлентблоки, рычаги, рейки, ступицы <span class="arr">→</span></div><div class="from"><b>от 20 BYN</b></div></a>
+      <a class="card w2" href="#calc" data-cat="razval"><img src="assets/s-razval.jpg" alt="" data-par="0.12"><h3>3D развал-схождение</h3><div class="from"><b>от 30 BYN</b><span class="arr">→</span></div></a>
+      <a class="card" href="#calc" data-cat="razval"><img src="assets/s-shina.jpg" alt="" data-par="0.12"><h3>Шиномонтаж</h3><div class="from"><b>от 55 BYN</b><span class="arr">→</span></div></a>
+      <a class="card" href="#calc" data-cat="elektro"><img src="assets/s-elektrik.jpg" alt="" data-par="0.12"><h3>Автоэлектрик</h3><div class="from"><b>от 150 BYN</b><span class="arr">→</span></div></a>
+      <a class="card" href="#calc" data-cat="dvs"><img src="assets/s-dvigatel.jpg" alt="" data-par="0.12"><h3>Двигатель и КПП</h3><div class="from"><b>от 200 BYN</b><span class="arr">→</span></div></a>
+      <a class="card" href="#calc" data-cat="klimat"><img src="assets/s-kondic.jpg" alt="" data-par="0.12"><h3>Кондиционер</h3><div class="from"><b>от 50 BYN</b><span class="arr">→</span></div></a>
+      <a class="card" href="#calc" data-cat="kuzov"><img src="assets/s-vyhlop.jpg" alt="" data-par="0.12"><h3>Выхлопная система</h3><div class="from"><b>от 30 BYN</b><span class="arr">→</span></div></a>
+      <a class="card" href="#stations"><img src="assets/s-kuzov.jpg" alt="" data-par="0.12"><h3>Кузовной ремонт</h3><div class="from"><b>по осмотру</b><span class="arr">→</span></div></a>
+    </div>
+  </div>
+</section>
+
+<section class="s" id="stations" style="padding-top:0">
+  <div class="wrap">
+    <div class="s-head reveal">
+      <div><div class="eyebrow">Наши СТО</div><h2>Три станции — <em>выберите ближайшую</em></h2></div>
+      <p>Все работают без выходных. Статус «открыто» обновляется по времени Минска.</p>
+    </div>
+    <div class="stations reveal" id="stList"></div>
+  </div>
+</section>
+
+<section class="s" style="padding-top:0">
+  <div class="wrap">
+    <div class="why reveal">
+      <div><b>7<em>/</em>7</b><h3>Без выходных</h3><p>Машина сломалась в воскресенье — приезжайте, мы работаем.</p></div>
+      <div><b>3</b><h3>СТО в Минске</h3><p>Выбирайте ту, что ближе к дому или работе.</p></div>
+      <div><b>37</b><h3>Работ с ценой</h3><p>Прозрачный прайс: знаете порядок цен до приезда.</p></div>
+      <div><b>0</b><h3>Работ без согласования</h3><p>Цену и запчасти мастер-приёмщик согласует с вами до начала ремонта.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="s" id="reviews" style="padding-top:0">
+  <div class="wrap"><div class="s-head reveal"><div><div class="eyebrow">Отзывы</div><h2>Что говорят <em>клиенты</em></h2></div></div></div>
+  <div class="reviews"><div class="rev-track" id="revs"></div></div>
+</section>
+
+<section class="cta">
+  <div class="wrap">
+    <h2>Посчитайте ремонт сейчас — приезжайте без сюрпризов</h2>
+    <a class="btn btn-ink" href="#calc">Открыть калькулятор →</a>
+  </div>
+</section>
+
+<footer class="ftr">
+  <div class="wrap">
+    <div><img src="assets/logo-light.png" alt="RS-Auto"><p>СТО «RS-Auto» · Минск · без выходных</p></div>
+    <nav><a href="#calc">Калькулятор</a><a href="#services">Услуги</a><a href="#stations">Контакты</a><a href="#reviews">Отзывы</a></nav>
+  </div>
+</footer>
+
+<div class="mbar"><div class="sum"><small>Ваш расчёт</small><b>от <span id="msum">0</span> BYN</b></div><a class="call" href="#stations" aria-label="Позвонить"><svg viewBox="0 0 24 24"><path d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z"/></svg></a><a class="btn btn-red" href="#receipt">Записаться</a></div>
+
+<!-- =========================================================
+     KP: «Было / Стало»
+     ========================================================= -->
+<section class="kp" id="kp">
+  <div class="wrap">
+    <div class="kp-top">
+      <h2>Сейчас цены <span>спрятаны.</span><br>Новый сайт — их продаёт.</h2>
+      <div class="kp-contacts"><a class="cphone" href="tel:+375295708247">+375 29 570-82-47</a><a class="cico tg" href="https://t.me/Alexander_SN" target="_blank" rel="noopener" aria-label="Telegram @Alexander_SN" title="Telegram @Alexander_SN"><svg viewBox="0 0 24 24"><path d="M21.9 4.3 18.7 19.4c-.2 1-.9 1.3-1.7.8l-4.8-3.5-2.3 2.2c-.3.3-.5.5-1 .5l.3-4.9 8.9-8c.4-.3-.1-.5-.6-.2L6.5 13.2 1.8 11.7c-1-.3-1-1 .2-1.5L20.6 3c.9-.3 1.6.2 1.3 1.3z"/></svg></a><a class="cico vb" href="viber://chat?number=%2B375295708247" aria-label="Viber +375 29 570-82-47" title="Viber +375 29 570-82-47"><svg viewBox="0 0 24 24"><path d="M11.4 1C8 1 3.2 1.8 2.3 6.3c-.6 2.5-.5 5.4.2 8 .6 2.2 2 3.6 4 4.3v3.1c0 .6.7.9 1.1.4l2.9-3c2.8.1 6.8-.4 8.7-2 2.4-2 2.7-6.2 2-9.8C20.5 2.6 16.3 1 11.4 1zm4.8 13.9c-.4.6-1.1 1.2-1.9 1-2.9-.8-6.7-4.4-7.6-7.4-.2-.8.4-1.5 1-1.9.5-.3 1.1-.1 1.4.3l1 1.4c.3.4.2 1-.2 1.3l-.4.3c.6 1.6 1.8 2.8 3.4 3.4l.3-.4c.3-.4.9-.5 1.3-.2l1.4 1c.4.3.6.9.3 1.2z"/></svg></a></div>
+    </div>
+    <div class="kp-grid">
+      <div>
+        <span class="col-lbl was">● Сейчас</span>
+        <div class="old">
+          <div class="browser"><div class="bar"><i></i><i></i><i></i><span>rs-auto.by</span></div><img src="assets/old-site.jpg" alt="Текущая главная rs-auto.by"></div>
+          <div class="phone"><img src="assets/old-mobile.jpg" alt="Текущая мобильная версия"></div>
+          <span class="pin" style="left:8%;top:44%">1</span>
+          <span class="pin" style="left:62%;top:8%">2</span>
+          <span class="pin" style="left:14%;top:64%">3</span>
+          <span class="pin" style="right:6%;top:62%">4</span>
+        </div>
+        <ul class="issues">
+          <li><b>1</b><span><strong>Первый экран без оффера.</strong> Крупно — «RS-AUTO» и кнопка «Наши услуги»; причины выбрать вас нет.</span></li>
+          <li><b>2</b><span><strong>Шапка из 4 телефонов.</strong> Клиенту нужно самому разбираться, куда звонить.</span></li>
+          <li><b>3</b><span><strong>Цены есть, но спрятаны</strong> на отдельной странице таблицей — посчитать ремонт нельзя, записаться онлайн тоже.</span></li>
+          <li><b>4</b><span><strong>Разные часы работы:</strong> в тексте «с 8:00 до 23:00», в контактах — до 20:00. Такое снижает доверие.</span></li>
+        </ul>
+        <div class="metrics">
+          <div class="metric"><b>7,5 с</b><span>загрузка на телефоне</span></div>
+          <div class="metric"><b>4,4 с</b><span>до первого контента</span></div>
+          <div class="metric"><b>66</b><span>запросов к серверу</span></div>
+          <div class="metric"><b>4,5 МБ</b><span>вес главной</span></div>
+        </div>
+        <p class="note" style="color:#8A93A1">Замер 30.10.2026, мобильная эмуляция (iPhone 13), без ограничения скорости сети.</p>
+      </div>
+      <div>
+        <span class="col-lbl will">● После апгрейда</span>
+        <div class="will-card">
+          <h3>Сайт, где клиент <span>сам считает ремонт</span> и записывается</h3>
+          <p class="usp">Ваш прайс превращается в калькулятор: человек видит сумму, выбирает ближайшую СТО и оставляет телефон — с готовым списком работ.</p>
+          <div class="phase">
+            <div class="phase-h"><b>01</b><span>Визуальный апгрейд</span></div>
+            <div class="feat">
+              <div><strong>Оффер «цена до приезда»</strong><p>Главный аргумент — на первом экране.</p></div>
+              <div><strong>Стиль RS</strong><p>Графит и гоночный красный, параллакс и живые анимации.</p></div>
+              <div><strong>Одна понятная шапка</strong><p>Вместо 4 телефонов — выбор СТО с её контактами.</p></div>
+              <div><strong>Mobile-first</strong><p>Сумма расчёта и кнопка записи всегда внизу экрана.</p></div>
+            </div>
+          </div>
+          <div class="phase">
+            <div class="phase-h"><b>02</b><span>Функционал</span></div>
+            <div class="feat">
+              <div><strong>Калькулятор ремонта</strong><p>37 работ из вашего прайса, легковой / джип.</p></div>
+              <div><strong>Запись с расчётом</strong><p>Заявка уходит на нужную СТО в Telegram сразу со списком работ.</p></div>
+              <div><strong>Статус 3 СТО</strong><p>«Открыто / закрыто» по времени Минска.</p></div>
+              <div><strong>Отзывы с Яндекс Карт</strong><p>Подтягиваются автоматически.</p></div>
+            </div>
+          </div>
+          <div class="kp-cta">
+            <a class="btn" href="https://t.me/Alexander_SN" target="_blank" rel="noopener">Обсудить проект →</a>
+            <div class="kp-contacts dark-c"><a class="cphone" href="tel:+375295708247">+375 29 570-82-47</a><a class="cico tg" href="https://t.me/Alexander_SN" target="_blank" rel="noopener" aria-label="Telegram @Alexander_SN"><svg viewBox="0 0 24 24"><path d="M21.9 4.3 18.7 19.4c-.2 1-.9 1.3-1.7.8l-4.8-3.5-2.3 2.2c-.3.3-.5.5-1 .5l.3-4.9 8.9-8c.4-.3-.1-.5-.6-.2L6.5 13.2 1.8 11.7c-1-.3-1-1 .2-1.5L20.6 3c.9-.3 1.6.2 1.3 1.3z"/></svg></a><a class="cico vb" href="viber://chat?number=%2B375295708247" aria-label="Viber +375 29 570-82-47"><svg viewBox="0 0 24 24"><path d="M11.4 1C8 1 3.2 1.8 2.3 6.3c-.6 2.5-.5 5.4.2 8 .6 2.2 2 3.6 4 4.3v3.1c0 .6.7.9 1.1.4l2.9-3c2.8.1 6.8-.4 8.7-2 2.4-2 2.7-6.2 2-9.8C20.5 2.6 16.3 1 11.4 1zm4.8 13.9c-.4.6-1.1 1.2-1.9 1-2.9-.8-6.7-4.4-7.6-7.4-.2-.8.4-1.5 1-1.9.5-.3 1.1-.1 1.4.3l1 1.4c.3.4.2 1-.2 1.3l-.4.3c.6 1.6 1.8 2.8 3.4 3.4l.3-.4c.3-.4.9-.5 1.3-.2l1.4 1c.4.3.6.9.3 1.2z"/></svg></a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// Прайс RS-Auto (rs-auto.by/ceny-sto-v-minske, 30.10.2026). Цены «от», BYN.
+// p — легковой, s — джип/микроавтобус (если отличается)
+const CATS=[
+ {id:"to",name:"ТО и диагностика",items:[
+  ["Замена масла двигателя с масляным фильтром",30],["Замена масла в механической КПП",30],["Замена охлаждающей жидкости",50],["Компьютерная диагностика",30],["Считывание и удаление ошибок ЭБУ",30]]},
+ {id:"podveska",name:"Подвеска и рулевое",items:[
+  ["Осмотр подвески снизу",20],["Замена сайлентблоков",40],["Замена рулевого наконечника",30],["Замена рулевой тяги",35],["Разработка муфты рулевой тяги",35],["Замена шаровой опоры (на болтах)",35],["Замена шаровой опоры (вкручивается)",27],["Замена шаровой опоры (заклёпки, пресс)",60],["Замена переднего ступичного подшипника",45],["Замена заднего ступичного подшипника (барабаны)",50],["Замена заднего ступичного подшипника (задний привод)",130],["Ремонт рулевой рейки",550]]},
+ {id:"razval",name:"Развал и шины",items:[
+  ["Развал-схождение одной оси",30,40],["Развал-схождение двух осей",50,60],["Шиномонтаж: переобувка 4 колёс",55]]},
+ {id:"tormoza",name:"Тормоза",items:[["Замена тормозной жидкости",50],["Ремонт суппортов",90]]},
+ {id:"dvs",name:"Двигатель и КПП",items:[["Замена сцепления",200],["Ремонт двигателя",750]]},
+ {id:"elektro",name:"Автоэлектрик",items:[["Ремонт стартера",150],["Ремонт генератора",180]]},
+ {id:"klimat",name:"Кондиционер",items:[["Ремонт кондиционера",50],["Заправка кондиционера",55]]},
+ {id:"kuzov",name:"Выхлоп и фары",items:[["Ремонт глушителя",30],["Сварка глушителей",30],["Полировка фар",50]]},
+];
+let car="car",cat="podveska";const picked=new Map();
+const $=s=>document.querySelector(s);
+const price=it=>car==="suv"&&it[2]?it[2]:it[1];
+const total=CATS.reduce((n,c)=>n+c.items.length,0);
+
+function renderCats(){
+  $("#cats").innerHTML=CATS.map(c=>{const n=c.items.filter(it=>picked.has(it[0])).length;return `<button type="button" role="tab" class="chip${c.id===cat?" on":""}" data-c="${c.id}">${c.name}${n?`<i>${n}</i>`:""}</button>`}).join("");
+}
+function renderItems(){
+  const c=CATS.find(x=>x.id===cat);
+  $("#items").innerHTML=c.items.map(it=>`<button type="button" class="item${picked.has(it[0])?" on":""}" data-n="${it[0]}" aria-pressed="${picked.has(it[0])}"><span class="box"></span><span class="nm">${it[0]}</span><span class="pr"><small>от</small>${price(it)} BYN</span></button>`).join("");
+}
+let shown=0;
+function renderReceipt(){
+  const all=CATS.flatMap(c=>c.items).filter(it=>picked.has(it[0]));
+  $("#lines").innerHTML=all.length?all.map(it=>`<li><span>${it[0]}</span><span>${price(it)}</span></li>`).join(""):'<li class="empty">Отметьте работы слева</li>';
+  const sum=all.reduce((s,it)=>s+price(it),0);
+  animate(shown,sum);shown=sum;
+  $("#rmeta").textContent=`RS-Auto · ${car==="suv"?"джип / микроавтобус":"легковой"} · работ: ${all.length}`;
+}
+function animate(from,to){
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches){$("#sum").textContent=to;$("#msum").textContent=to;return}
+  const t0=performance.now(),d=500;
+  (function step(t){const k=Math.min(1,(t-t0)/d),e=1-Math.pow(1-k,3),v=Math.round(from+(to-from)*e);$("#sum").textContent=v;$("#msum").textContent=v;if(k<1)requestAnimationFrame(step)})(t0);
+}
+$("#cats").addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;cat=b.dataset.c;renderCats();renderItems()});
+$("#items").addEventListener("click",e=>{const b=e.target.closest(".item");if(!b)return;const n=b.dataset.n;picked.has(n)?picked.delete(n):picked.set(n,1);renderCats();renderItems();renderReceipt()});
+document.querySelectorAll(".seg button").forEach(b=>b.onclick=()=>{car=b.dataset.car;document.querySelectorAll(".seg button").forEach(x=>x.classList.toggle("on",x===b));renderItems();renderReceipt()});
+document.querySelectorAll(".card[data-cat]").forEach(c=>c.addEventListener("click",()=>{cat=c.dataset.cat;renderCats();renderItems()}));
+// пример расчёта, чтобы калькулятор не был пустым
+["Осмотр подвески снизу","Замена сайлентблоков","Развал-схождение двух осей"].forEach(n=>picked.set(n,1));
+renderCats();renderItems();renderReceipt();
+function book(e){e.preventDefault();const t=$("#toast");t.textContent="Демо: в рабочей версии заявка со списком работ сразу уйдёт на выбранную СТО ✓";t.classList.add("show");setTimeout(()=>t.classList.remove("show"),3400);return false}
+
+// бегущая строка
+const MQ=[["Развал-схождение",35],["Замена масла",25],["Диагностика подвески",20],["Замена сайлентблоков",40],["Шиномонтаж",55],["Ремонт суппортов",90],["Заправка кондиционера",55],["Ремонт стартера",150],["Ремонт генератора",180],["Полировка фар",50]];
+const mq=MQ.map(([n,p])=>`<span>${n} <b>от ${p} BYN</b></span>`).join("");$("#marquee").innerHTML=mq+mq;
+
+// станции
+const ST=[
+ {name:"Янки Мавра, 41",img:"st-mavra.jpg",open:[8.5,20],hrs:"8:30–20:00 без выходных",tags:["Кузовной ремонт","Автоэлектрик","Шиномонтаж","Развал-схождение","Мойка","Химчистка","Полировка"],tels:["+375 29 957-97-97","+375 29 557-97-97"]},
+ {name:"Пономаренко, 75А",img:"st-ponomarenko.jpg",open:[9,20],hrs:"9:00–20:00 без выходных",tags:["Развал-схождение","Автоэлектрик"],tels:["+375 29 107-50-25","+375 29 271-88-88","+375 17 270-73-17"]},
+ {name:"Уборевича, 85",img:"st-uborevicha.jpg",open:[9,20],hrs:"9:00–20:00 без выходных",tags:["Развал-схождение","Шиномонтаж"],tels:["+375 29 101-28-28","+375 29 888-81-07","+375 17 341-88-01"]},
+];
+const now=new Date(new Date().toLocaleString("en-US",{timeZone:"Europe/Minsk"})),h=now.getHours()+now.getMinutes()/60;
+let openN=0;
+$("#stList").innerHTML=ST.map(s=>{const o=h>=s.open[0]&&h<s.open[1];if(o)openN++;const close=String(s.open[1]).padStart(2,"0")+":00";return `<article class="st"><div class="ph"><img src="assets/${s.img}" alt="СТО на ул. ${s.name}" loading="lazy"><span class="live"><span class="dot${o?"":" off"}"></span>${o?"Открыто до "+close:"Сейчас закрыто"}</span></div><div class="bd"><h3>ул. ${s.name}</h3><div class="hrs">${s.hrs}</div><ul>${s.tags.map(t=>`<li>${t}</li>`).join("")}</ul><div class="tels">${s.tels.map(t=>`<a href="tel:${t.replace(/[^\d+]/g,"")}">${t}</a>`).join("<br>")}</div><div class="acts"><a class="btn btn-red" href="#calc">Записаться</a><a class="btn btn-ghost" href="https://yandex.by/maps/?text=${encodeURIComponent("Минск, ул. "+s.name)}" target="_blank" rel="noopener">Маршрут</a></div></div></article>`}).join("");
+$("#hdrOpen").textContent=openN?`Открыто ${openN} из 3 СТО`:"Сейчас закрыто";if(!openN)$("#hdrDot").classList.add("off");
+
+// отзывы (с сайта rs-auto.by)
+const RV=[["Хочу выразить благодарность новой команде вашей СТО, которая не первый раз выручает меня и качественно обслуживает машинку! Спасибо, что стараетесь ремонт делать без задержек и отдаёте автомобиль к вечеру.","Алексей А."],["Хорошее СТО со средним ценником. Мастера работают аккуратно за закрытыми дверями. Цены и запчасти согласовываются. Есть приличный холл для ожидания, можно рассчитаться картой.","Сергей"],["Очень хороший сервис и культура обслуживания. СТО выше всяких похвал — ненавязчивое, во всём разберутся, объяснят и дадут рекомендации. Прозрачная оплата услуг.","Андрей"],["Отличный сервис, адекватные цены. Менял стойки стабилизатора, задние тормозные колодки, масла и фильтра, диагностика подвески. Приятным бонусом была мойка машины. Рекомендую!","Alexei"],["Прекрасный внимательный персонал. Всё объяснили на примитивном уровне. Слаженная и аккуратная работа очень порадовала. Кстати, там очень вкусный кофе!","Екатерина М."]];
+const rv=RV.map(([t,n])=>`<div class="rev"><div class="stars">Отзыв с сайта</div><p>«${t}»</p><b>${n}</b></div>`).join("");$("#revs").innerHTML=rv+rv;
+
+// эффекты: прогресс, параллакс, мышь, появление
+const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+const par=[...document.querySelectorAll("[data-speed]")],ipar=[...document.querySelectorAll("[data-par]")];
+let ticking=false;
+function onScroll(){
+  const y=scrollY,H=document.documentElement.scrollHeight-innerHeight;
+  $("#progress").style.transform=`scaleX(${H>0?y/H:0})`;
+  if(!reduce){
+    par.forEach(el=>{el.style.transform=(el.classList.contains("bigtype")?"translateY(-50%) ":"")+`translate3d(0,${y*+el.dataset.speed}px,0)`});
+    ipar.forEach(img=>{const r=img.parentElement.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight)return;const k=(r.top+r.height/2-innerHeight/2)/innerHeight;img.style.transform=`translate3d(0,${k*-60}px,0)`});
+  }
+  ticking=false;
+}
+addEventListener("scroll",()=>{if(!ticking){requestAnimationFrame(onScroll);ticking=true}},{passive:true});onScroll();
+if(!reduce&&matchMedia("(pointer:fine)").matches){
+  const wrap=$("#carWrap"),els=[...wrap.querySelectorAll("[data-mouse]")];
+  addEventListener("mousemove",e=>{const x=e.clientX/innerWidth-.5,y=e.clientY/innerHeight-.5;els.forEach(el=>{const k=+el.dataset.mouse;el.style.translate=`${x*k}px ${y*k}px`})});
+}
+if(!reduce){const io=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting){x.target.classList.remove("pre");io.unobserve(x.target)}}),{threshold:.08});
+document.querySelectorAll(".reveal").forEach(el=>{if(el.getBoundingClientRect().top>innerHeight){el.classList.add("pre");io.observe(el)}});}
+</script>
+</body>
+</html>
