@@ -657,8 +657,6 @@ $("#items").addEventListener("click",e=>{const b=e.target.closest(".item");if(!b
 document.querySelectorAll(".seg button").forEach(b=>b.onclick=()=>{car=b.dataset.car;document.querySelectorAll(".seg button").forEach(x=>x.classList.toggle("on",x===b));renderItems();renderReceipt()});
 document.querySelectorAll(".card[data-cat],.mt[data-cat]").forEach(c=>{const k=CATS.find(x=>x.id===c.dataset.cat);if(!k)return;const f=c.querySelector("[data-from]");if(f){const h=HL[k.id],it=k.items.find(i=>i[0]===h[0]);f.textContent=`${h[1]} от ${typeof it[1]==="object"?it[1].car:it[1]} BYN`;}const n=c.querySelector("[data-n]");if(n)n.textContent=`${k.items.length} работ`;c.addEventListener("click",()=>{cat=k.id;query="";expanded=false;$("#q").value="";renderCats();renderItems()})});
 document.querySelectorAll("[data-total]").forEach(el=>el.textContent=total);
-// пример расчёта, чтобы калькулятор не был пустым
-["Осмотр подвески снизу","Замена сайлентблоков","Развал-схождение, 2 оси"].forEach(n=>picked.set(n,1));
 renderCats();renderItems();renderReceipt();
 function book(e){e.preventDefault();const f=$("#bookf");if(f.hidden){if(!picked.size){toast("Сначала добавьте работы в расчёт");return false}f.hidden=false;$("#bookBtn").textContent="Отправить заявку";$("#tel").focus();return false}if($("#tel").value.replace(/\D/g,"").length<9){toast("Укажите телефон — перезвоним и подтвердим время");$("#tel").focus();return false}const t=$("#toast");t.textContent="Демо: в рабочей версии заявка со списком работ сразу уйдёт на выбранную СТО ✓";t.classList.add("show");setTimeout(()=>t.classList.remove("show"),3400);return false}
 
