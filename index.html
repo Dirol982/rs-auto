@@ -193,7 +193,7 @@ section.s{padding:120px 0;position:relative}
 /* услуги */
 .bento{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:260px;gap:12px}
 .card{position:relative;overflow:hidden;background:var(--ink-3);display:flex;flex-direction:column;justify-content:flex-end;padding:22px;isolation:isolate;min-width:0}
-.card img{position:absolute;left:0;top:-15%;width:100%;height:130%;object-fit:cover;z-index:-2;transition:transform .8s cubic-bezier(.2,.7,.2,1),filter .6s;filter:grayscale(.85) contrast(1.05) brightness(.7)}
+.card img{position:absolute;left:0;top:-15%;width:100%;height:130%;object-fit:cover;z-index:-2;transition:transform .8s cubic-bezier(.2,.7,.2,1),filter .6s;filter:grayscale(.55) contrast(1.05) brightness(.68)}
 .card::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(0deg,rgba(12,13,15,.95),rgba(12,13,15,.15) 60%)}
 .card:hover img{filter:grayscale(0) brightness(.8);transform:scale(1.06)}
 .card h3{font-size:22px}
@@ -243,10 +243,20 @@ section.s{padding:120px 0;position:relative}
 .why p{color:var(--muted);font-size:15px}
 
 /* отзывы */
-.reviews{overflow:hidden;mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
-.rev-track{display:flex;gap:16px;width:max-content;animation:run 60s linear infinite}
-.reviews:hover .rev-track{animation-play-state:paused}
-.rev{width:380px;background:var(--ink-2);border:1px solid var(--line);padding:26px;flex:none}
+.reviews{overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;scroll-padding-left:max(24px,calc((100vw - 1280px)/2 + 24px));cursor:grab;user-select:none}
+.reviews::-webkit-scrollbar{display:none}
+.reviews.drag{cursor:grabbing;scroll-snap-type:none}
+.reviews.drag .rev{pointer-events:none}
+.rev-track{display:flex;gap:16px;width:max-content;padding:4px max(24px,calc((100vw - 1280px)/2 + 24px))}
+.rev{width:380px;background:var(--ink-2);border:1px solid var(--line);padding:26px;flex:none;scroll-snap-align:start;transition:border-color .3s}
+.rev:hover{border-color:rgba(227,18,11,.5)}
+.rev-nav{display:flex;align-items:center;gap:10px}
+.rev-nav button{width:48px;height:48px;border:1px solid var(--line);background:transparent;color:#fff;font-size:20px;cursor:pointer;transition:background .2s,border-color .2s}
+.rev-nav button:hover:not(:disabled){background:var(--red);border-color:var(--red)}
+.rev-nav button:disabled{opacity:.3;cursor:default}
+.rev-bar{height:2px;background:var(--line);margin-top:22px;position:relative;overflow:hidden}
+.rev-bar i{position:absolute;left:0;top:0;bottom:0;background:var(--red);transition:left .2s,width .2s}
+.rev-hint{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
 .rev .stars{font-family:var(--mono);color:var(--red-2);letter-spacing:.1em;font-size:11px;text-transform:uppercase}
 .rev p{margin:12px 0 18px;font-size:16px;color:#DADDE1}
 .rev b{font-size:14px}
@@ -264,6 +274,8 @@ section.s{padding:120px 0;position:relative}
 .ftr img{height:36px;width:auto;margin-bottom:12px}
 .ftr nav{display:flex;gap:22px;flex-wrap:wrap}
 .ftr a:hover{color:#fff}
+.credits{flex-basis:100%;font-size:11px;color:#5E646C;line-height:1.6}
+.credits a{text-decoration:underline;text-underline-offset:2px}
 
 /* мобильная панель расчёта */
 .mbar{display:none}
@@ -322,7 +334,11 @@ section.s{padding:120px 0;position:relative}
   .stations{grid-template-columns:1fr}
   .why{grid-template-columns:1fr}
   .why div{border-right:0;margin-right:0;border-bottom:1px solid var(--line);padding:24px 0}
-  .rev{width:300px}
+  .rev{width:82vw;max-width:340px}
+  .rev-nav button{display:none}
+  .rev-nav{width:100%}
+  .rev-track{padding:4px 16px}
+  .reviews{scroll-padding-left:16px}
   .ftr{padding-bottom:110px}
   .mbar{display:flex;align-items:center;gap:12px;position:fixed;left:0;right:0;bottom:0;z-index:60;padding:10px max(14px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(14px,env(safe-area-inset-left,0px));background:rgba(12,13,15,.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line)}
   .mbar .sum{flex:1;line-height:1.2}
@@ -436,7 +452,7 @@ section.s{padding:120px 0;position:relative}
     <div class="bento reveal">
       <a class="card w2 h2" href="#calc" data-cat="podveska"><img src="assets/s-podveska.jpg" alt="" data-par="0.12"><div class="eyebrow">Самое частое</div><h3>Подвеска</h3><div class="from">сайлентблоки, рычаги, амортизаторы, ступицы <span class="arr">→</span></div><div class="from"><b data-from></b><span data-n></span></div></a>
       <a class="card w2" href="#calc" data-cat="razval"><img src="assets/s-razval.jpg" alt="" data-par="0.12"><h3>3D развал-схождение и шины</h3><div class="from"><b data-from></b><span class="arr">→</span></div></a>
-      <a class="card" href="#calc" data-cat="tormoza"><img src="assets/s-shina.jpg" alt="" data-par="0.12"><h3>Тормоза</h3><div class="from"><b data-from></b><span class="arr">→</span></div></a>
+      <a class="card" href="#calc" data-cat="tormoza"><img src="assets/s-tormoza.jpg" alt="" data-par="0.12"><h3>Тормоза</h3><div class="from"><b data-from></b><span class="arr">→</span></div></a>
       <a class="card" href="#calc" data-cat="elektro"><img src="assets/s-elektrik.jpg" alt="" data-par="0.12"><h3>Автоэлектрик</h3><div class="from"><b data-from></b><span class="arr">→</span></div></a>
       <a class="card" href="#calc" data-cat="dvs"><img src="assets/s-dvigatel.jpg" alt="" data-par="0.12"><h3>Двигатель и топливная</h3><div class="from"><b data-from></b><span class="arr">→</span></div></a>
       <a class="card" href="#calc" data-cat="klimat"><img src="assets/s-kondic.jpg" alt="" data-par="0.12"><h3>Кондиционер и печка</h3><div class="from"><b data-from></b><span class="arr">→</span></div></a>
@@ -478,8 +494,9 @@ section.s{padding:120px 0;position:relative}
 </section>
 
 <section class="s" id="reviews" style="padding-top:0">
-  <div class="wrap"><div class="s-head reveal"><div><div class="eyebrow">Отзывы</div><h2>Что говорят <em>клиенты</em></h2></div></div></div>
-  <div class="reviews"><div class="rev-track" id="revs"></div></div>
+  <div class="wrap"><div class="s-head reveal"><div><div class="eyebrow">Отзывы</div><h2>Что говорят <em>клиенты</em></h2></div><div class="rev-nav"><span class="rev-hint" id="revHint">Листайте →</span><button type="button" id="revPrev" aria-label="Предыдущий отзыв">←</button><button type="button" id="revNext" aria-label="Следующий отзыв">→</button></div></div></div>
+  <div class="reviews" id="reviewsBox" tabindex="0" aria-label="Отзывы клиентов, листайте"><div class="rev-track" id="revs"></div></div>
+  <div class="wrap"><div class="rev-bar"><i id="revBar"></i></div></div>
 </section>
 
 <section class="cta">
@@ -493,6 +510,7 @@ section.s{padding:120px 0;position:relative}
   <div class="wrap">
     <div><img src="assets/logo-light.png" alt="RS-Auto"><p>СТО «RS-Auto» · Минск · без выходных</p></div>
     <nav><a href="#calc">Калькулятор</a><a href="#services">Услуги</a><a href="#stations">Контакты</a><a href="#reviews">Отзывы</a></nav>
+    <p class="credits">Фото услуг: <a href="https://www.flickr.com/photos/26344495@N05/49645567296" target="_blank" rel="noopener">Ivan Radic</a> (CC BY 2.0), <a href="https://commons.wikimedia.org/w/index.php?curid=83542212" target="_blank" rel="noopener">Dmitry Racer</a> (CC BY-SA 4.0), <a href="https://www.flickr.com/photos/9998127@N06/7482891456" target="_blank" rel="noopener">wbaiv</a> (CC BY-SA 2.0), <a href="https://www.flickr.com/photos/26344495@N05/47741393671" target="_blank" rel="noopener">Ivan Radic</a> (CC BY 2.0), <a href="https://www.flickr.com/photos/35166455@N00/4717397470" target="_blank" rel="noopener">L.C.Nøttaasen</a> (CC BY 2.0), <a href="https://www.flickr.com/photos/45597153@N05/5849265010" target="_blank" rel="noopener">Rob Ellis</a> (CC BY 2.0), <a href="https://www.flickr.com/photos/26344495@N05/49197779033" target="_blank" rel="noopener">Ivan Radic</a> (CC BY 2.0), <a href="https://www.flickr.com/photos/26344495@N05/48454198666" target="_blank" rel="noopener">Ivan Radic</a> (CC BY 2.0). Фото СТО — RS-Auto.</p>
   </div>
 </footer>
 
@@ -677,7 +695,21 @@ $("#hdrOpen").textContent=openN?`Открыто ${openN} из 3 СТО`:"Сей�
 
 // отзывы (с сайта rs-auto.by)
 const RV=[["Хочу выразить благодарность новой команде вашей СТО, которая не первый раз выручает меня и качественно обслуживает машинку! Спасибо, что стараетесь ремонт делать без задержек и отдаёте автомобиль к вечеру.","Алексей А."],["Хорошее СТО со средним ценником. Мастера работают аккуратно за закрытыми дверями. Цены и запчасти согласовываются. Есть приличный холл для ожидания, можно рассчитаться картой.","Сергей"],["Очень хороший сервис и культура обслуживания. СТО выше всяких похвал — ненавязчивое, во всём разберутся, объяснят и дадут рекомендации. Прозрачная оплата услуг.","Андрей"],["Отличный сервис, адекватные цены. Менял стойки стабилизатора, задние тормозные колодки, масла и фильтра, диагностика подвески. Приятным бонусом была мойка машины. Рекомендую!","Alexei"],["Прекрасный внимательный персонал. Всё объяснили на примитивном уровне. Слаженная и аккуратная работа очень порадовала. Кстати, там очень вкусный кофе!","Екатерина М."]];
-const rv=RV.map(([t,n])=>`<div class="rev"><div class="stars">Отзыв с сайта</div><p>«${t}»</p><b>${n}</b></div>`).join("");$("#revs").innerHTML=rv+rv;
+const rv=RV.map(([t,n])=>`<div class="rev"><div class="stars">Отзыв с сайта</div><p>«${t}»</p><b>${n}</b></div>`).join("");$("#revs").innerHTML=rv;
+// листание: палец — нативная прокрутка, мышь — перетаскивание, плюс стрелки и клавиатура
+(function(){const box=$("#reviewsBox"),bar=$("#revBar"),prev=$("#revPrev"),next=$("#revNext");
+  const step=()=>{const c=box.querySelector(".rev");return c?c.getBoundingClientRect().width+16:300};
+  const upd=()=>{const max=box.scrollWidth-box.clientWidth;const k=max>0?box.scrollLeft/max:0;const w=Math.max(12,box.clientWidth/box.scrollWidth*100);bar.style.width=w+"%";bar.style.left=(k*(100-w))+"%";prev.disabled=box.scrollLeft<4;next.disabled=box.scrollLeft>max-4;if(box.scrollLeft>20)$("#revHint").style.visibility="hidden"};
+  box.addEventListener("scroll",upd,{passive:true});addEventListener("resize",upd);upd();
+  prev.onclick=()=>box.scrollBy({left:-step(),behavior:"smooth"});next.onclick=()=>box.scrollBy({left:step(),behavior:"smooth"});
+  box.addEventListener("keydown",e=>{if(e.key==="ArrowRight"){next.click();e.preventDefault()}if(e.key==="ArrowLeft"){prev.click();e.preventDefault()}});
+  let down=false,x0=0,s0=0,moved=0;
+  box.addEventListener("pointerdown",e=>{if(e.pointerType!=="mouse")return;down=true;moved=0;x0=e.clientX;s0=box.scrollLeft;box.setPointerCapture(e.pointerId)});
+  box.addEventListener("pointermove",e=>{if(!down)return;const dx=e.clientX-x0;moved=Math.max(moved,Math.abs(dx));if(moved>4)box.classList.add("drag");box.scrollLeft=s0-dx});
+  const end=e=>{if(!down)return;down=false;if(box.classList.contains("drag")){box.classList.remove("drag");const i=Math.round(box.scrollLeft/step());box.scrollTo({left:i*step(),behavior:"smooth"})}};
+  box.addEventListener("pointerup",end);box.addEventListener("pointercancel",end);
+  box.addEventListener("wheel",e=>{if(Math.abs(e.deltaX)<Math.abs(e.deltaY)&&e.shiftKey){box.scrollLeft+=e.deltaY;e.preventDefault()}},{passive:false});
+})();
 
 // эффекты: прогресс, параллакс, мышь, появление
 const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
